@@ -13,4 +13,5 @@ To run the application simply click on the "shelldio.sh" file located in the mai
 To use the application, you must install the following python packages using the PIP manager. The install commands are shown below for each setup and we have provided a setup command file named "setup.sh" in the main folder.
 
 ```pip install pygame```
-```pip install youtube_dl```
+```pip install pytube```
+```pip install moviepy```

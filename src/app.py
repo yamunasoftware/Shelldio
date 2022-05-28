@@ -1,21 +1,36 @@
 import random
 import backend
 
+# APP UTILITY FUNCTIONS #
+
 # List Songs Function:
 def listSongs():
   # Get the Files in Directory:
   files = backend.os.listdir(backend.relativePath())
+  newFiles = []
+
+  # Loop Variables:
+  counts = 0
   turns = 0
 
   # Loops through List:
-  while turns < len(files):
+  while counts < len(files):
+    # Checks the Case:
+    if files[counts].find('.wav') != -1:
+      # Appends the Value:
+      newFiles.append(files[counts])
+
+    counts+=1
+
+  # Loops through List:
+  while turns < len(newFiles):
     # Prints the Songs:
-    print(files[turns].replace('.wav', ''))
+    print(newFiles[turns].replace('.wav', ''))
     
     turns+=1
 
   # Returns the Files:
-  return files
+  return newFiles
 
 # Handle Commands Function:
 def handleCommands(files: list, command: str):
@@ -36,14 +51,26 @@ def handleCommands(files: list, command: str):
     # Unpauses Music:
     unpause()
 
+  elif command == 'add':
+    # Adds New Music:
+    add()
+
   elif command == 'shuffle':
     # Error Handling:
     try:
-      # Shuffles the Music:
+      # Gets the Input:
       songs = int(input('Queue: '))
-      shuffle(files, songs)
+
+      # Checks the Case:
+      if songs < 0:
+        # Restarts Command:
+        print('Invalid Queue Number\n')
+        handleCommands(files, command)
+
+      # Shuffles the Music:
+      shuffle(files, songs, current=[])
     
-    except ValueError:
+    except Exception:
       # Restarts Command:
       print('Invalid Queue Number\n')
       handleCommands(files, command)
@@ -63,7 +90,7 @@ def mainApp():
   command = input('Shelldio >> ')
   handleCommands(localFiles, command)
 
-# APP CONTROLS #
+# APP CONTROL FUNCTIONS #
 
 # Help Function:
 def help():
@@ -79,15 +106,29 @@ def play(files: list):
     songs = int(input('Queue: '))
 
     # Checks the Case:
-    if backend.isSongThere(files, songInput):
-      # Queues the Song:
-      backend.playMusic(songInput + '.wav')
+    if songs < 0:
+      # Restarts Play:
+      print('Invalid Queue Number\n')
+      play(files)
 
-    # Shuffles the Music:
-    shuffle(files, songs)
+    # Checks the Case:
+    if songInput.find('.wav') != -1:
+      # Restarts Play:
+      print('Invalid Song\n')
+      play(files)
+
+    else:
+      # Checks the Case:
+      if backend.isSongThere(files, songInput):
+        # Shuffles:
+        shuffle(files, songs, current=[songInput + '.wav'])
+
+      else:
+        # Restarts Play:
+        print('Invalid Song\n')
   
-  except ValueError:
-    # Restarts Shuffle:
+  except Exception:
+    # Restarts Play:
     print('Invalid Queue Number\n')
     play(files)
 
@@ -101,10 +142,33 @@ def unpause():
   # Unpauses:
   backend.unpauseMusic()
 
+# Add Function:
+def add():
+  # Error Handling:
+  try:
+    # Gets the URL and Name:
+    url = input('URL: ')
+    name = input('Name: ')
+
+    # Checks the Case:
+    if name.find('.wav') != -1:
+      # Restarts Add:
+      print('Invalid Name\n')
+      add() 
+
+    else:
+      # Adds Music:
+      backend.downloadMusic(url, name)
+
+  except Exception:
+    # Restarts Add:
+    print('Invalid YouTube URL\n')
+    add()
+
 # Shuffle Function:
-def shuffle(files: list, songs: int):
+def shuffle(files: list, songs: int, current: list):
   # Loop Variables:
-  musicList = []
+  musicList = current
   turns = 0
 
   # Loops through Times:
@@ -115,10 +179,10 @@ def shuffle(files: list, songs: int):
 
     turns+=1
 
-  # Plays a List of Music:
+  # Plays the List of Music:
   backend.playList(musicList)
 
-# APP RUNNING #
+# APP RUNNING FUNCTION CALLS #
 
 # App Running Calls:
 mainApp()

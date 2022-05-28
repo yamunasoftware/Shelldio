@@ -1,2 +1,3 @@
 pip install pygame
-pip install youtube_dl
+pip install pytube
+pip install moviepy
