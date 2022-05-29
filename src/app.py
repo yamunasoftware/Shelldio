@@ -29,11 +29,11 @@ def listSongs():
     
     turns+=1
 
-  # Returns the Files:
-  return newFiles
+  # Sets the Files:
+  backend.files = newFiles
 
 # Handle Commands Function:
-def handleCommands(files: list, command: str):
+def handleCommands(command: str):
   # Checks the Case:
   if command == 'help':
     # Lists the Commands:
@@ -41,7 +41,7 @@ def handleCommands(files: list, command: str):
 
   elif command == 'play':
     # Plays the Music:
-    play(files)
+    play()
 
   elif command == 'pause':
     # Pauses Music:
@@ -74,15 +74,23 @@ def handleCommands(files: list, command: str):
         if songs < 0:
           # Restarts Command:
           print('Invalid Queue Number\n')
-          handleCommands(files, command)
+          handleCommands(command)
 
         # Shuffles the Music:
-        shuffle(files, songs, current=[])
+        shuffle(songs, current=[])
     
     except Exception:
       # Restarts Command:
       print('Invalid Queue Number\n')
-      handleCommands(files, command)
+      handleCommands(command)
+  
+  elif command == 'delete':
+    # Deletes File:
+    delete()
+
+  elif command == 'delete -a':
+    # Deletes All Files:
+    deleteAll()
 
   elif command == 'exit':
     # Ends the Application:
@@ -96,21 +104,21 @@ def handleCommands(files: list, command: str):
 def mainApp():
   # Prints the Songs:
   print('\n')
-  localFiles = listSongs()
+  listSongs()
 
   # Starts the Commands:
   command = input('Shelldio >> ')
-  handleCommands(localFiles, command)
+  handleCommands(command)
 
 # APP CONTROL FUNCTIONS #
 
 # Help Function:
 def help():
   # Prints the Commands:
-  print('\nhelp\nplay\npause\nunpause\nadd\nshuffle\nexit\nback (inside of command)')
+  print('\nhelp\nplay\npause\nunpause\nadd\nshuffle\ndelete (-a for all)\nexit\nback (inside of command)')
 
 # Play Function:
-def play(files: list):
+def play():
   # Error Handling:
   try:
     # Gets the Song Input:
@@ -130,19 +138,19 @@ def play(files: list):
       if songs < 0:
         # Restarts Play:
         print('Invalid Queue Number\n')
-        play(files)
+        play()
 
       # Checks the Case:
       if songInput.find('.wav') != -1:
         # Restarts Play:
         print('Invalid Song\n')
-        play(files)
+        play()
 
       else:
         # Checks the Case:
-        if backend.isSongThere(files, songInput):
+        if backend.isSongThere(songInput):
           # Shuffles:
-          shuffle(files, songs, current=[songInput + '.wav'])
+          shuffle(songs, current=[songInput + '.wav'])
 
         else:
           # Restarts Play:
@@ -151,7 +159,7 @@ def play(files: list):
   except Exception:
     # Restarts Play:
     print('Invalid Queue Number\n')
-    play(files)
+    play()
 
 # Pause Function:
 def pause():
@@ -193,7 +201,7 @@ def add():
     add()
 
 # Shuffle Function:
-def shuffle(files: list, songs: int, current: list):
+def shuffle(songs: int, current: list):
   # Loop Variables:
   musicList = current
   turns = 0
@@ -201,13 +209,56 @@ def shuffle(files: list, songs: int, current: list):
   # Loops through Times:
   while turns < songs:
     # Generates Random Start:
-    start = random.randint(0, len(files)-1)
-    musicList.append(files[start])
+    start = random.randint(0, len(backend.files)-1)
+    musicList.append(backend.files[start])
 
     turns+=1
 
   # Plays the List of Music:
   backend.playList(musicList)
+
+# Delete Function:
+def delete():
+  # Error Handling:
+  try:
+    # Folder and File Input:
+    type = input('Folder: ')
+    name = input('File: ')
+
+    # Checks the Case:
+    if type == 'back' or name == 'back':
+      # Restarts:
+      mainApp()
+
+    else:
+      # Runs Deletion:
+      backend.deleteFile(type, name)
+  
+  except Exception:
+    # Restarts Delete:
+    print('Invalid Inputs\n')
+    delete()
+
+# Delete All Function:
+def deleteAll():
+  # Error Handling:
+  try:
+    # Folder Input:
+    type = input('Folder: ')
+
+    # Checks the Case:
+    if type == 'back':
+      # Restarts:
+      mainApp()
+
+    else:
+      # Runs Deletion:
+      backend.deleteAllFiles(type)
+  
+  except Exception:
+    # Restarts Delete:
+    print('Invalid Folder\n')
+    deleteAll()
 
 # APP RUNNING FUNCTION CALLS #
 
