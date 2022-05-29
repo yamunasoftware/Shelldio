@@ -1,8 +1,12 @@
 import os
 os.environ['PYGAME_HIDE_SUPPORT_PROMPT'] = "hide"
+import time
 
 import warnings
 warnings.filterwarnings("ignore")
+
+import pygame
+import threading
 
 from pygame.locals import *
 from pygame import mixer
@@ -65,28 +69,56 @@ def extractAudio(file: str, name: str):
   audioClip.close()
   videoClip.close()
 
-# MUSIC INTERFACE FUNCTIONS #
+# MUSIC QUEUE FUNCTIONS #
 
 # Play List Function:
 def playList(files: list):
-  # Loop Variable and Setup:
+  # Mixer Event Startup:
   mixer.init()
-  turns = 0
+  end = pygame.USEREVENT+1
+  
+  # Queue Setup:
+  firstTime = True
+  index = 0
 
-  # Loops Through List:
-  while turns < len(files):
+  # Sets the Event and Runs:
+  mixer.music.set_endevent(end)
+  musicThread = threading.Thread(target=playMusicQueue, args=(files, index, end, firstTime,), daemon=True)
+  musicThread.start()
+
+# Play Music Queue Function:
+def playMusicQueue(files: list, index: int, end: int, firstTime: bool):
+  # Checks the Case:
+  if index < len(files):
+    # Sets the Indexes:
+    newIndex = index
+    first = firstTime
+
     # Checks the Case;
-    if turns == 0:
-      # Plays the Files:
-      playMusic(files[turns])
+    if index == 0 and first == True:
+      # Plays the Next Track:
+      playMusic(files[index])
+      first = False
 
     else:
-      # Checks the Case:
-      if mixer.music.get_busy() == False:
-        # Plays the Files:
-        playMusic(files[turns])
+      # Loops through Events:
+      for event in pygame.event.get():
+        # Checks the Case:
+        if event.type == end:
+          # Sets the Index:
+          newIndex+=1
 
-    turns+=1
+          # Checks the Case:
+          if newIndex < len(files)-1:
+            # Plays the Next Track:
+            playMusic(files[index])
+    
+    # Recurses:
+    time.sleep(0.1)
+    musicThread = threading.Thread(target=playMusicQueue, args=(files, newIndex, end, first,), daemon=True)
+    musicThread.start()
+
+# MUSIC INTERFACE FUNCTIONS #
 
 # Play Music Function:
 def playMusic(file: str):

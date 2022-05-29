@@ -59,16 +59,25 @@ def handleCommands(files: list, command: str):
     # Error Handling:
     try:
       # Gets the Input:
-      songs = int(input('Queue: '))
+      rawSongs = input('Queue: ')
 
       # Checks the Case:
-      if songs < 0:
-        # Restarts Command:
-        print('Invalid Queue Number\n')
-        handleCommands(files, command)
+      if rawSongs == 'back':
+        # Restarts:
+        mainApp()
 
-      # Shuffles the Music:
-      shuffle(files, songs, current=[])
+      else:
+        # Sets the Songs:
+        songs = int(rawSongs)
+
+        # Checks the Case:
+        if songs < 0:
+          # Restarts Command:
+          print('Invalid Queue Number\n')
+          handleCommands(files, command)
+
+        # Shuffles the Music:
+        shuffle(files, songs, current=[])
     
     except Exception:
       # Restarts Command:
@@ -85,8 +94,11 @@ def handleCommands(files: list, command: str):
 
 # Main Application Function:
 def mainApp():
-  # Start the App:
+  # Prints the Songs:
+  print('\n')
   localFiles = listSongs()
+
+  # Starts the Commands:
   command = input('Shelldio >> ')
   handleCommands(localFiles, command)
 
@@ -103,29 +115,38 @@ def play(files: list):
   try:
     # Gets the Song Input:
     songInput = input('Track: ')
-    songs = int(input('Queue: '))
+    rawSongs = input('Queue: ')
 
     # Checks the Case:
-    if songs < 0:
-      # Restarts Play:
-      print('Invalid Queue Number\n')
-      play(files)
-
-    # Checks the Case:
-    if songInput.find('.wav') != -1:
-      # Restarts Play:
-      print('Invalid Song\n')
-      play(files)
+    if songInput == 'back' or rawSongs == 'back':
+      # Restarts:
+      mainApp()
 
     else:
-      # Checks the Case:
-      if backend.isSongThere(files, songInput):
-        # Shuffles:
-        shuffle(files, songs, current=[songInput + '.wav'])
+      # Sets the Songs:
+      songs = int(rawSongs)
 
-      else:
+      # Checks the Case:
+      if songs < 0:
+        # Restarts Play:
+        print('Invalid Queue Number\n')
+        play(files)
+
+      # Checks the Case:
+      if songInput.find('.wav') != -1:
         # Restarts Play:
         print('Invalid Song\n')
+        play(files)
+
+      else:
+        # Checks the Case:
+        if backend.isSongThere(files, songInput):
+          # Shuffles:
+          shuffle(files, songs, current=[songInput + '.wav'])
+
+        else:
+          # Restarts Play:
+          print('Invalid Song\n')
   
   except Exception:
     # Restarts Play:
@@ -151,14 +172,20 @@ def add():
     name = input('Name: ')
 
     # Checks the Case:
-    if name.find('.wav') != -1:
-      # Restarts Add:
-      print('Invalid Name\n')
-      add() 
+    if url == 'back' or name == 'back':
+      # Restarts:
+      mainApp()
 
     else:
-      # Adds Music:
-      backend.downloadMusic(url, name)
+      # Checks the Case:
+      if name.find('.wav') != -1:
+        # Restarts Add:
+        print('Invalid Name\n')
+        add() 
+
+      else:
+        # Adds Music:
+        backend.downloadMusic(url, name)
 
   except Exception:
     # Restarts Add:
