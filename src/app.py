@@ -107,7 +107,7 @@ def mainApp():
 # Help Function:
 def help():
   # Prints the Commands:
-  print('\nhelp\nplay\npause\nunpause\nadd\nshuffle\nexit\n')
+  print('\nhelp\nplay\npause\nunpause\nadd\nshuffle\nexit\nback (inside of command)')
 
 # Play Function:
 def play(files: list):
