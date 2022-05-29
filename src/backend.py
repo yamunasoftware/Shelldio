@@ -157,8 +157,7 @@ def playMusicQueue(queue: list, index: int, end: int, firstTime: bool):
     
     # Recurses:
     time.sleep(0.1)
-    musicThread = threading.Thread(target=playMusicQueue, args=(queue, newIndex, end, first,), daemon=True)
-    musicThread.start()
+    playMusicQueue(queue, newIndex, end, first)
 
 # MUSIC INTERFACE FUNCTIONS #
 

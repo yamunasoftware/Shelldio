@@ -93,8 +93,14 @@ def handleCommands(command: str):
     deleteAll()
 
   elif command == 'exit':
-    # Ends the Application:
-    quit()
+    # Error Handling:
+    try:
+      # Ends the Application:
+      quit()
+    
+    except Exception:
+      # Ends the Application:
+      quit()
 
   # Goes Back to Main Menu:
   print('\n')
@@ -207,7 +213,7 @@ def shuffle(songs: int, current: list):
   turns = 0
 
   # Loops through Times:
-  while turns < songs:
+  while turns < songs+1:
     # Generates Random Start:
     start = random.randint(0, len(backend.files)-1)
     musicList.append(backend.files[start])
