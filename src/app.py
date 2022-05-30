@@ -1,5 +1,6 @@
 import random
 import backend
+import sys
 
 # APP UTILITY FUNCTIONS #
 
@@ -93,14 +94,8 @@ def handleCommands(command: str):
     deleteAll()
 
   elif command == 'exit':
-    # Error Handling:
-    try:
-      # Ends the Application:
-      quit()
-    
-    except Exception:
-      # Ends the Application:
-      quit()
+    # Ends the Application:
+    end()
 
   # Goes Back to Main Menu:
   print('\n')
@@ -265,6 +260,11 @@ def deleteAll():
     # Restarts Delete:
     print('Invalid Folder\n')
     deleteAll()
+
+# End Function:
+def end():
+  # Exits:
+  sys.exit()
 
 # APP RUNNING FUNCTION CALLS #
 

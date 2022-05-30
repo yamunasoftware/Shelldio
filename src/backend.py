@@ -14,9 +14,9 @@ from pygame import mixer
 from pytube import YouTube
 from moviepy.editor import *
 
-# FILE VARIABLES #
+# BACKEND VARIABLES #
 
-# Files List:
+# List Variables:
 files = []
 
 # PATH FUNCTIONS #
@@ -118,15 +118,15 @@ def playList(queue: list):
   # Mixer Event Startup:
   mixer.init()
   end = pygame.USEREVENT+1
+  mixer.music.set_endevent(end)
   
   # Queue Setup:
-  firstTime = True
   index = 0
+  firstTime = True
 
-  # Sets the Event and Runs:
-  mixer.music.set_endevent(end)
-  musicThread = threading.Thread(target=playMusicQueue, args=(queue, index, end, firstTime,), daemon=True)
-  musicThread.start()
+  # Queue Execution:
+  threading.Thread(target=playMusicQueue, args=(queue, index, end, firstTime,), daemon=True).start()
+  threading.excepthook = exit
 
 # Play Music Queue Function:
 def playMusicQueue(queue: list, index: int, end: int, firstTime: bool):
@@ -158,6 +158,11 @@ def playMusicQueue(queue: list, index: int, end: int, firstTime: bool):
     # Recurses:
     time.sleep(0.1)
     playMusicQueue(queue, newIndex, end, first)
+
+# Exit Function: 
+def exit(args):
+  # Exits:
+  sys.exit()
 
 # MUSIC INTERFACE FUNCTIONS #
 
