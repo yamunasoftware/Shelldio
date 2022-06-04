@@ -11,7 +11,7 @@ import threading
 from pygame.locals import *
 from pygame import mixer
 
-from pytube import YouTube
+from youtube_dl import YoutubeDL
 from moviepy.editor import *
 
 # BACKEND VARIABLES #
@@ -64,15 +64,20 @@ def isSongThere(song: str):
 
 # Download Music Function:
 def downloadMusic(url: str, name: str):
-  # Sets the URL and Downloads:
-  tube = YouTube(url)
-  video = tube.streams.filter().first()
+  # Gets Audio from Downloaded Video:
+  specifyDownload(url, name)
+  extractAudio(getDefaultDownload(name), name)
 
-  # Downloads File and Converts:
-  file = video.download(output_path=videoPath())
-  extractAudio(file, name)
+  # Resets the Folder:
   deleteAllFiles('video')
   print('Download Successful\n')
+
+# Specify Download Function:
+def specifyDownload(url: str, name: str, **options):
+  # Downloads the Video with Filename:
+  options['outtmpl'] = getDefaultDownload(name)
+  with YoutubeDL(options) as video:
+    video.download([url])
 
 # Extract Audio Function:
 def extractAudio(file: str, name: str):
@@ -84,6 +89,13 @@ def extractAudio(file: str, name: str):
   # Closes the Clip Managers:
   audioClip.close()
   videoClip.close()
+
+# Get Default Download Function:
+def getDefaultDownload(name: str):
+  # Returns the Default:
+  return videoPath() + '\\' + name + '.mp4'
+
+# DELETION FUNCTIONS #
 
 # Delete All Files Function:
 def deleteAllFiles(type: str):
@@ -105,7 +117,7 @@ def deleteFile(type: str, name: str):
   # Checks the Case:
   if type == 'video':
     # Removes the Files:
-    os.remove(videoPath() + '\\' + name + '.3gpp')
+    os.remove(videoPath() + '\\' + name + '.mp4')
   
   elif type == 'media':
     # Removes the File:

@@ -11,5 +11,5 @@ To run the application simply click on the "shelldio.sh" or "shelldio.bat" files
 To use the application, you must install the following python packages using the PIP manager. The install commands are shown below for each setup and we have provided setup installation files named "setup.sh" and "setup.bat" in the "setup" folder. Once again, the shell script can be used for Linux or MacOS, while the batch script can be used for Windows.
 
 ```pip install pygame```
-```pip install pytube```
 ```pip install moviepy```
+```pip install youtube_dl```
