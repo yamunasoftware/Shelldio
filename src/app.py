@@ -17,7 +17,7 @@ def listSongs():
   # Loops through List:
   while counts < len(files):
     # Checks the Case:
-    if files[counts].find('.wav') != -1:
+    if files[counts].find('.mp3') != -1:
       # Appends the Value:
       newFiles.append(files[counts])
 
@@ -26,7 +26,7 @@ def listSongs():
   # Loops through List:
   while turns < len(newFiles):
     # Prints the Songs:
-    print(newFiles[turns].replace('.wav', ''))
+    print(newFiles[turns].replace('.mp3', ''))
     
     turns+=1
 
@@ -51,6 +51,14 @@ def handleCommands(command: str):
   elif command == 'unpause':
     # Unpauses Music:
     unpause()
+
+  elif command == 'rewind':
+    # Rewinds Music:
+    rewind()
+
+  elif command == 'timeline':
+    # Scrubs through Timeline:
+    timeline()
 
   elif command == 'add':
     # Adds New Music:
@@ -116,7 +124,7 @@ def mainApp():
 # Help Function:
 def help():
   # Prints the Commands:
-  print('\nhelp\nplay\npause\nunpause\nadd\nshuffle\ndelete (-a for all)\nexit\nback (inside of command)')
+  print('\nhelp\nplay\npause\nunpause\nrewind\ntimeline\nadd\nshuffle\ndelete (-a for all)\nexit\nback (inside of command)')
 
 # Play Function:
 def play():
@@ -143,7 +151,7 @@ def play():
         play()
 
       # Checks the Case:
-      if songInput.find('.wav') != -1:
+      if songInput.find('.mp3') != -1:
         # Restarts Play:
         print('Invalid Song\n')
         play()
@@ -152,7 +160,7 @@ def play():
         # Checks the Case:
         if backend.isSongThere(songInput):
           # Shuffles:
-          shuffle(songs, current=[songInput + '.wav'])
+          shuffle(songs, current=[songInput + '.mp3'])
 
         else:
           # Restarts Play:
@@ -173,6 +181,46 @@ def unpause():
   # Unpauses:
   backend.unpauseMusic()
 
+# Rewind Function:
+def rewind():
+  # Rewinds:
+  backend.unpauseMusic()
+  backend.rewindMusic()
+
+# Timeline Function:
+def timeline():
+  # Error Handling:
+  try:
+    # Checks the Case:
+    if backend.soundObject != None:
+      # Prompts User for Number:
+      length = backend.getTrackLength()
+      number = input('Length: ' + str(round(length)) + '\nSeconds: ')
+
+      # Checks the Case:
+      if number == 'back':
+        # Restarts:
+        mainApp()
+
+      # Sets the Positions:
+      position = backend.getCurrentPlayback()
+      newPosition = int(number) + position
+
+      # Checks the Case:
+      if newPosition < 0 or newPosition > length:
+        # Restarts Timeline:
+        print('Invalid Timeline Number')
+        timeline()
+
+      else:
+        # Scrubs to Position:
+        backend.scrub(newPosition)
+
+  except Exception:
+    # Restarts Timeline:
+    print('Invalid Timeline Number')
+    timeline()  
+
 # Add Function:
 def add():
   # Error Handling:
@@ -188,7 +236,7 @@ def add():
 
     else:
       # Checks the Case:
-      if name.find('.wav') != -1:
+      if name.find('.mp3') != -1:
         # Restarts Add:
         print('Invalid Name\n')
         add() 

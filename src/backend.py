@@ -16,8 +16,9 @@ from moviepy.editor import *
 
 # BACKEND VARIABLES #
 
-# List Variables:
+# Playback Variables:
 files = []
+soundObject = None
 
 # PATH FUNCTIONS #
 
@@ -50,7 +51,7 @@ def isSongThere(song: str):
   # Loops through List:
   while turns < len(files):
     # Checks the Case:
-    if files[turns] == (song + '.wav'):
+    if files[turns] == (song + '.mp3'):
       # Breaks Loop:
       returnValue = True
       break
@@ -84,7 +85,7 @@ def extractAudio(file: str, name: str):
   # Extracts the Audio:
   videoClip = VideoFileClip(file)
   audioClip = videoClip.audio
-  audioClip.write_audiofile(relativePath() + '\\' + name + '.wav')
+  audioClip.write_audiofile(relativePath() + '\\' + name + '.mp3')
 
   # Closes the Clip Managers:
   audioClip.close()
@@ -121,7 +122,7 @@ def deleteFile(type: str, name: str):
   
   elif type == 'media':
     # Removes the File:
-    os.remove(relativePath() + '\\' + name + '.wav')
+    os.remove(relativePath() + '\\' + name + '.mp3')
 
 # MUSIC QUEUE FUNCTIONS #
 
@@ -184,7 +185,11 @@ def playMusic(file: str):
   filename = relativePath() + '\\' + file
   mixer.init()
 
-  # Loads and PLays Music:
+  # Sets the Sound Object:
+  global soundObject
+  soundObject = mixer.Sound(filename)
+
+  # Loads and Plays Music:
   mixer.music.load(filename)
   mixer.music.play()
 
@@ -199,3 +204,34 @@ def unpauseMusic():
   # Unpauses Music:
   mixer.init()
   mixer.music.unpause()
+
+# Rewind Music Function:
+def rewindMusic():
+  # Rewinds:
+  mixer.init()
+  mixer.music.rewind()
+
+# Scrub Function:
+def scrub(timestamp: int):
+  # Sets the Position:
+  mixer.init()
+  mixer.music.set_pos(timestamp)
+
+# TRACK DATA FUNCTIONS #
+
+# Get Track Length Function:
+def getTrackLength():
+  # Checks the Case:
+  if soundObject != None:
+    # Returns the Length:
+    return soundObject.get_length()
+  
+  else:
+    # Returns the Default:
+    return -1
+
+# Get Current Playback Position:
+def getCurrentPlayback():
+  # Returns the Playback:
+  mixer.init()
+  return mixer.music.get_pos() / 1000.0
