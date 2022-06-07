@@ -211,13 +211,13 @@ def rewindMusic():
   mixer.init()
   mixer.music.rewind()
 
+# MUSIC SCRUBBING FUNCTIONS #
+
 # Scrub Function:
-def scrub(timestamp: int):
+def scrub(timestamp: float):
   # Sets the Position:
   mixer.init()
-  mixer.music.set_pos(timestamp)
-
-# TRACK DATA FUNCTIONS #
+  mixer.music.play(start=timestamp)
 
 # Get Track Length Function:
 def getTrackLength():
@@ -229,9 +229,3 @@ def getTrackLength():
   else:
     # Returns the Default:
     return -1
-
-# Get Current Playback Position:
-def getCurrentPlayback():
-  # Returns the Playback:
-  mixer.init()
-  return mixer.music.get_pos() / 1000.0

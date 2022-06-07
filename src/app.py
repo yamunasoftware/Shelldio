@@ -202,19 +202,19 @@ def timeline():
         # Restarts:
         mainApp()
 
-      # Sets the Positions:
-      position = backend.getCurrentPlayback()
-      newPosition = int(number) + position
-
-      # Checks the Case:
-      if newPosition < 0 or newPosition > length:
-        # Restarts Timeline:
-        print('Invalid Timeline Number')
-        timeline()
-
       else:
-        # Scrubs to Position:
-        backend.scrub(newPosition)
+        # Sets the Position:
+        position = float(number)
+
+        # Checks the Case:
+        if position < 0 or position > length:
+          # Restarts Timeline:
+          print('Invalid Timeline Number')
+          timeline()
+
+        else:
+          # Scrubs to Position:
+          backend.scrub(position)
 
   except Exception:
     # Restarts Timeline:
