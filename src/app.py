@@ -62,7 +62,11 @@ def handleCommands(command: str):
 
   elif command == 'add':
     # Adds New Music:
-    add()
+    add(False)
+
+  elif command == 'add -d':
+    # Adds Music With Delete:
+    add(True)
 
   elif command == 'shuffle':
     # Error Handling:
@@ -124,7 +128,7 @@ def mainApp():
 # Help Function:
 def help():
   # Prints the Commands:
-  print('\nhelp\nplay\npause\nunpause\nrewind\ntimeline\nadd\nshuffle\ndelete (-a for all)\nexit\nback (inside of command)')
+  print('\nhelp\nplay\npause\nunpause\nrewind\ntimeline\nadd (-d for delete)\nshuffle\ndelete (-a for all)\nexit\nback (inside of command)')
 
 # Play Function:
 def play():
@@ -222,7 +226,7 @@ def timeline():
     timeline()  
 
 # Add Function:
-def add():
+def add(delete: bool):
   # Error Handling:
   try:
     # Gets the URL and Name:
@@ -243,7 +247,7 @@ def add():
 
       else:
         # Adds Music:
-        backend.downloadMusic(url, name)
+        backend.downloadMusic(url, name, delete)
 
   except Exception:
     # Restarts Add:

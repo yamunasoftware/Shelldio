@@ -64,13 +64,17 @@ def isSongThere(song: str):
 # MUSIC DOWNLOAD FUNCTIONS #
 
 # Download Music Function:
-def downloadMusic(url: str, name: str):
+def downloadMusic(url: str, name: str, delete: bool):
   # Gets Audio from Downloaded Video:
   specifyDownload(url, name)
   extractAudio(getDefaultDownload(name), name)
 
-  # Resets the Folder:
-  deleteAllFiles('video')
+  # Checks the Case:
+  if delete == True:
+    # Deletes the Files:
+    deleteAllFiles('video')
+
+  # Success Notification:
   print('Download Successful\n')
 
 # Specify Download Function:
