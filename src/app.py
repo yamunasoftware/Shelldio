@@ -157,7 +157,7 @@ def play():
       # Checks the Case:
       if songInput.find('.mp3') != -1:
         # Restarts Play:
-        print('Invalid Song\n')
+        print('Invalid Track\n')
         play()
 
       else:
@@ -168,7 +168,7 @@ def play():
 
         else:
           # Restarts Play:
-          print('Invalid Song\n')
+          print('Invalid Track\n')
   
   except Exception:
     # Restarts Play:
