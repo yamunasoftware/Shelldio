@@ -269,6 +269,7 @@ def shuffle(songs: int, current: list):
     turns+=1
 
   # Plays the List of Music:
+  backend.pauseMusic()
   backend.playList(musicList)
 
 # Delete Function:
