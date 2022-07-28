@@ -150,7 +150,6 @@ def play():
     else:
       # Sets the Songs:
       songs = int(rawSongs)
-      songs-=1
 
       # Checks the Case:
       if songs < 0:
@@ -195,7 +194,6 @@ def loop():
     else:
       # Sets the Songs:
       songs = int(rawSongs)
-      songs-=1
 
       # Checks the Case:
       if songs < 0:
