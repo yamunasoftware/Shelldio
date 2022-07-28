@@ -167,7 +167,7 @@ def play():
         # Checks the Case:
         if backend.isSongThere(songInput):
           # Shuffles:
-          shuffle(songs, current=[songInput + '.mp3'])
+          shuffle(songs-1, current=[songInput + '.mp3'])
 
         else:
           # Restarts Play:
@@ -319,7 +319,7 @@ def shuffle(songs: int, current: list):
   turns = 0
 
   # Loops through Times:
-  while turns < songs+1:
+  while turns < songs:
     # Generates Random Start:
     start = random.randint(0, len(backend.files)-1)
     musicList.append(backend.files[start])

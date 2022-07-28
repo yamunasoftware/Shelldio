@@ -142,46 +142,30 @@ def playList(queue: list):
   mixer.init()
   end = pygame.USEREVENT+1
   mixer.music.set_endevent(end)
-  
-  # Queue Setup:
-  index = 0
-  firstTime = True
 
   # Queue Execution:
-  threading.Thread(target=playMusicQueue, args=(queue, index, end, firstTime,), daemon=True).start()
+  threading.Thread(target=playMusicQueue, args=(queue, end,), daemon=True).start()
   threading.excepthook = exit
 
 # Play Music Queue Function:
-def playMusicQueue(queue: list, index: int, end: int, firstTime: bool):
-  # Checks the Case:
-  if index < len(queue):
-    # Sets the Indexes:
-    newIndex = index
-    first = firstTime
-
-    # Checks the Case;
-    if index == 0 and first == True:
-      # Plays the Next Track:
-      playMusic(queue[index])
-      first = False
-
-    else:
-      # Loops through Events:
-      for event in pygame.event.get():
-        # Checks the Case:
-        if event.type == end:
-          # Sets the Index:
-          newIndex+=1
-
-          # Checks the Case:
-          if newIndex < len(queue)-1:
-            # Plays the Next Track:
-            playMusic(queue[index])
+def playMusicQueue(queue: list, end: int):
+  # Loop Setup:
+  turns = 0
+  playMusic(queue[turns])
+  
+  # Loops through Queue:
+  while turns < len(queue):
+    # Loops through Events:
+    for event in pygame.event.get():
+      # Checks the Case:
+      if event.type == end:
+        # Plays the Music:
+        turns+=1
+        playMusic(queue[turns])
     
-    # Recurses:
-    time.sleep(0.1)
-    playMusicQueue(queue, newIndex, end, first)
-
+    # Waits:
+    time.sleep(2)
+          
 # Exit Function: 
 def exit(args):
   # Exits:
