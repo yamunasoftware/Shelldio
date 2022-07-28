@@ -72,7 +72,7 @@ def downloadMusic(url: str, name: str, delete: bool):
   # Checks the Case:
   if delete == True:
     # Deletes the Files:
-    deleteAllFiles('video')
+    deleteFile('video', name)
 
   # Success Notification:
   print('Download Successful\n')
