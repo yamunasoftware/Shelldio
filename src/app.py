@@ -219,7 +219,7 @@ def loop():
           # Populates Song List:
           while turns < songs:
             # Appends:
-            musicList.append(songInput)
+            musicList.append(songInput + '.mp3')
             
             turns+=1
 
