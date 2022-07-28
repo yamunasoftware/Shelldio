@@ -130,6 +130,12 @@ def deleteFile(type: str, name: str):
 
 # MUSIC QUEUE FUNCTIONS #
 
+# Play List Pause Function:
+def playListPause(queue: list):
+  # Plays the List:
+  pauseMusic()
+  playList(queue)
+
 # Play List Function:
 def playList(queue: list):
   # Mixer Event Startup:

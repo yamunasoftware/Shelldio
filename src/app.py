@@ -44,6 +44,10 @@ def handleCommands(command: str):
     # Plays the Music:
     play()
 
+  elif command == 'loop':
+    # Loops through Tracks:
+    loop()
+
   elif command == 'pause':
     # Pauses Music:
     pause()
@@ -128,7 +132,7 @@ def mainApp():
 # Help Function:
 def help():
   # Prints the Commands:
-  print('\nhelp\nplay\npause\nunpause\nrewind\ntimeline\nadd (-d for delete)\nshuffle\ndelete (-a for all)\nexit\nback (inside of command)')
+  print('\nhelp\nplay\nloop\npause\nunpause\nrewind\ntimeline\nadd (-d for delete)\nshuffle\ndelete (-a for all)\nexit\nback (inside of command)')
 
 # Play Function:
 def play():
@@ -174,6 +178,62 @@ def play():
     # Restarts Play:
     print('Invalid Queue Number\n')
     play()
+
+# Loop Tracks Function:
+def loop():
+  # Error Handling:
+  try:
+    # Gets the Song Input:
+    songInput = input('Track: ')
+    rawSongs = input('Queue: ')
+
+    # Checks the Case:
+    if songInput == 'back' or rawSongs == 'back':
+      # Restarts:
+      mainApp()
+
+    else:
+      # Sets the Songs:
+      songs = int(rawSongs)
+      songs-=1
+
+      # Checks the Case:
+      if songs < 0:
+        # Restarts Play:
+        print('Invalid Queue Number\n')
+        loop()
+
+      # Checks the Case:
+      if songInput.find('.mp3') != -1:
+        # Restarts Play:
+        print('Invalid Track\n')
+        loop()
+
+      else:
+        # Checks the Case:
+        if backend.isSongThere(songInput):
+          # Song List:
+          musicList = []
+          turns = 0
+
+          # Populates Song List:
+          while turns < songs:
+            # Appends:
+            musicList.append(songInput)
+            
+            turns+=1
+
+          # Plays Music List:
+          backend.playListPause(musicList)
+
+        else:
+          # Restarts Play:
+          print('Invalid Track\n')
+  
+  except Exception:
+    # Restarts Play:
+    print('Invalid Queue Number\n')
+    loop()
 
 # Pause Function:
 def pause():
@@ -269,8 +329,7 @@ def shuffle(songs: int, current: list):
     turns+=1
 
   # Plays the List of Music:
-  backend.pauseMusic()
-  backend.playList(musicList)
+  backend.playListPause(musicList)
 
 # Delete Function:
 def delete():
