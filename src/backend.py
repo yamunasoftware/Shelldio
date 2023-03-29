@@ -11,7 +11,7 @@ import threading
 from pygame.locals import *
 from pygame import mixer
 
-from youtube_dl import YoutubeDL
+from pytube import YouTube
 from moviepy.editor import *
 
 # BACKEND VARIABLES #
@@ -78,11 +78,9 @@ def downloadMusic(url: str, name: str, delete: bool):
   print('Download Successful\n')
 
 # Specify Download Function:
-def specifyDownload(url: str, name: str, **options):
+def specifyDownload(url: str, name: str):
   # Downloads the Video with Filename:
-  options['outtmpl'] = getDefaultDownload(name)
-  with YoutubeDL(options) as video:
-    video.download([url])
+  YouTube(url).streams.first().download(filename=getDefaultDownload(name))
 
 # Extract Audio Function:
 def extractAudio(file: str, name: str):

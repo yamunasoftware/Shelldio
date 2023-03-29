@@ -96,7 +96,7 @@ def handleCommands(command: str):
         # Shuffles the Music:
         shuffle(songs, current=[])
     
-    except Exception:
+    except BaseException as e:
       # Restarts Command:
       print('Invalid Queue Number\n')
       handleCommands(command)
@@ -173,7 +173,7 @@ def play():
           # Restarts Play:
           print('Invalid Track\n')
   
-  except Exception:
+  except BaseException as e:
     # Restarts Play:
     print('Invalid Queue Number\n')
     play()
@@ -228,7 +228,7 @@ def loop():
           # Restarts Play:
           print('Invalid Track\n')
   
-  except Exception:
+  except BaseException as e:
     # Restarts Play:
     print('Invalid Queue Number\n')
     loop()
@@ -278,7 +278,7 @@ def timeline():
           # Scrubs to Position:
           backend.scrub(position)
 
-  except Exception:
+  except BaseException as e:
     # Restarts Timeline:
     print('Invalid Timeline Number')
     timeline()  
@@ -307,7 +307,7 @@ def add(delete: bool):
         # Adds Music:
         backend.downloadMusic(url, name, delete)
 
-  except Exception:
+  except BaseException as e:
     # Restarts Add:
     print('Invalid YouTube URL\n')
     add()
@@ -346,7 +346,7 @@ def delete():
       # Runs Deletion:
       backend.deleteFile(type, name)
   
-  except Exception:
+  except BaseException as e:
     # Restarts Delete:
     print('Invalid Inputs\n')
     delete()
@@ -367,7 +367,7 @@ def deleteAll():
       # Runs Deletion:
       backend.deleteAllFiles(type)
   
-  except Exception:
+  except BaseException as e:
     # Restarts Delete:
     print('Invalid Folder\n')
     deleteAll()

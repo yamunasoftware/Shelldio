@@ -12,4 +12,4 @@ To use the application, you must install the following python packages using the
 
 ```pip install pygame```
 ```pip install moviepy```
-```pip install youtube_dl```
+```pip install pytube```
