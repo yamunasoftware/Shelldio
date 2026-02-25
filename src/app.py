@@ -132,7 +132,22 @@ def mainApp():
 # Help Function:
 def help():
   # Prints the Commands:
-  print('\nhelp\nplay\nloop\npause\nunpause\nrewind\ntimeline\nadd (-d for delete)\nshuffle\ndelete (-a for all)\nexit\nback (inside of command)')
+  commands = '''
+    Options:
+    play: Plays a track and shuffles a specified number of songs
+    loop: Loops a track a specified number of times
+    pause: Pauses the music
+    unpause: Unpauses the music
+    rewind: Rewinds current track to the beginning
+    timeline: Shows current track timeline position and scrub to new position
+    add <-d>: Adds music to library with YouTube URL and/or deletes video after download
+    shuffle: Shuffles music library
+    delete <-a>: Deletes a file or all files in a folder
+    exit: Exits the Application
+    back: Go back within a command
+    help: List of all commands
+  '''
+  print(commands)
 
 # Play Function:
 def play():
@@ -173,7 +188,7 @@ def play():
           # Restarts Play:
           print('Invalid Track\n')
   
-  except BaseException as e:
+  except:
     # Restarts Play:
     print('Invalid Queue Number\n')
     play()
@@ -228,7 +243,7 @@ def loop():
           # Restarts Play:
           print('Invalid Track\n')
   
-  except BaseException as e:
+  except:
     # Restarts Play:
     print('Invalid Queue Number\n')
     loop()
@@ -278,7 +293,7 @@ def timeline():
           # Scrubs to Position:
           backend.scrub(position)
 
-  except BaseException as e:
+  except:
     # Restarts Timeline:
     print('Invalid Timeline Number')
     timeline()  
@@ -307,7 +322,7 @@ def add(delete: bool):
         # Adds Music:
         backend.downloadMusic(url, name, delete)
 
-  except BaseException as e:
+  except:
     # Restarts Add:
     print('Invalid YouTube URL\n')
     add()
@@ -323,7 +338,6 @@ def shuffle(songs: int, current: list):
     # Generates Random Start:
     start = random.randint(0, len(backend.files)-1)
     musicList.append(backend.files[start])
-
     turns+=1
 
   # Plays the List of Music:
@@ -346,7 +360,7 @@ def delete():
       # Runs Deletion:
       backend.deleteFile(type, name)
   
-  except BaseException as e:
+  except:
     # Restarts Delete:
     print('Invalid Inputs\n')
     delete()
@@ -367,7 +381,7 @@ def deleteAll():
       # Runs Deletion:
       backend.deleteAllFiles(type)
   
-  except BaseException as e:
+  except:
     # Restarts Delete:
     print('Invalid Folder\n')
     deleteAll()
